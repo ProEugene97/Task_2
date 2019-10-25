@@ -1,0 +1,113 @@
+dist:     trusty
+sudo:     required
+
+
+before_script:
+  - source ci/install-$TRAVIS_OS_NAME.sh
+
+matrix:
+  include:
+    #
+    # CppCheck
+    #
+    - os: linux
+      language: c
+      env:
+        - TEST="CppCheck"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+      script:
+        - cmake -DENABLE_CPPCHECK=ON -DCMAKE_C_COMPILER="gcc-6" -DCMAKE_CXX_COMPILER="g++-6" ..
+        - make
+        - make check
+
+    #
+    # Codecov
+    #
+    - os: linux
+      language: c
+      env:
+        - TEST="Codecov"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+      script:
+        - sudo apt install lcov
+        - sudo apt-get install ggcov
+        - sudo ln -s /usr/local/bin/gcov49 /usr/local/bin/gcov
+        - cmake -DENABLE_COVERAGE=ON -DCMAKE_C_COMPILER="gcc-6" ..
+        - make
+        - make test
+        - lcov --directory . --capture --output-file coverage.info
+        - bash <(curl -s https://codecov.io/bash)
+
+
+    #
+    # Valgrind
+    #
+    - os: linux
+      language: c
+      env:
+        - TEST="Valgrind"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+            - valgrind
+      script:
+        - cmake -DCMAKE_C_COMPILER="gcc-6" -DCMAKE_CXX_COMPILER="g++-6" ..
+        - make
+        - ctest -t memcheck
+    #
+    # g++ 6.0
+    #
+    - os: linux
+      language: c
+      env:
+        - TEST="GCC 6"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+      script:
+        - cmake -DCMAKE_C_COMPILER="gcc-6" -DCMAKE_CXX_COMPILER="g++-6" ..
+        - make
+        - make test
+
+
+    #
+    # Clang 4.0
+    #
+    - os: linux
+      language: c
+      env:
+        - TEST="Clang 4.0"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+            - gcc-6
+            - g++-6
+      script:
+        - cmake -DCMAKE_C_COMPILER=clang-4.0 -DCMAKE_CXX_COMPILER=clang++-4.0 ..
+        - make
+        - make test
+
