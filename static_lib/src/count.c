@@ -1,7 +1,7 @@
 #include "../include/count.h"
 
 int count(const char *const a, int n) {
-    int capacity = 50;
+    int capacity = 40;
     int size = 0;
     data *array = (data *) malloc(capacity * sizeof(data));
     char c = a[0];
@@ -25,7 +25,7 @@ int count(const char *const a, int n) {
             ind = 0;
             if (size == capacity) {
                 capacity *= 2;
-                data *tmp = (data *) realloc(array, capacity);
+                data *tmp = (data *)realloc(array, capacity * sizeof(data));
                 if (tmp != NULL)
                     array = tmp;
                 else {

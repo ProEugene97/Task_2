@@ -4,12 +4,13 @@
 #include "data.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define THREADS 4
 
 typedef struct{
     const char *a;
-    data *array;
+    data **array;
     int first;
     int last;
     int len;

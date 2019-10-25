@@ -14,21 +14,21 @@ void * one_thread_count(void *param) {
         if (i < threadData->last && threadData->a[i] == c)
             ++length;
         else {
-            for (; ind < *threadData->size && length != threadData->array[ind].length; ++ind);
+            for (; ind < *threadData->size && length != (*threadData->array)[ind].length; ++ind);
             if (ind == *threadData->size) {
-                threadData->array[ind].length = length;
-                threadData->array[ind].quantity = 0;
+                (*threadData->array)[ind].length = length;
+                (*threadData->array)[ind].quantity = 0;
                 ++*threadData->size;
             }
-            ++threadData->array[ind].quantity;
-            threadData->array[ind].c = c;
+            ++(*threadData->array)[ind].quantity;
+            (*threadData->array)[ind].c = c;
             if (*threadData->size == threadData->capacity) {
                 threadData->capacity *= 2;
-                data *tmp = (data *)realloc(threadData->array, threadData->capacity);
+                data *tmp = (data *)realloc(*threadData->array, threadData->capacity * sizeof(data));
                 if (tmp != NULL)
-                    threadData->array = tmp;
+                    *threadData->array = tmp;
                 else {
-                    free (threadData->array);
+                    free (*threadData->array);
                     exit (1);
                 }
             }
@@ -54,7 +54,7 @@ int parallel_count(const char *const a, int n) {
         sizes[i] = 0;
         arrays[i] = (data *)malloc((cap / THREADS) * sizeof(data));
         threadData[i].a = a;
-        threadData[i].array = arrays[i];
+        threadData[i].array = &arrays[i];
         threadData[i].first = i * n / THREADS;
         threadData[i].last = threadData[i].first + n / THREADS;
         threadData[i].len = n;

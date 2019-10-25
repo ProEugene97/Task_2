@@ -53,3 +53,21 @@ TEST_F(Tests, test5)
     }
     ASSERT_EQ(parallel_count(a, SIZE), 1);
 }
+
+TEST_F(Tests, test6)
+{
+    int ind = 1;
+    int b = ind;
+    char c = 'A';
+    int len = 0;
+    for (int i = 0; i < SIZE && c < 'z'; ++i) {
+        a[i] = c;
+        ++len;
+        --ind;
+        if (ind == 0) {
+            ind = ++b;
+            ++c;
+        }
+    }
+    ASSERT_EQ(count(a, len), parallel_count(a, len));
+}
