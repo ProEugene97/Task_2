@@ -26,8 +26,12 @@ int count(const char *const a, int n) {
             if (size == capacity) {
                 capacity *= 2;
                 data *tmp = (data *) realloc(array, capacity);
-                free(array);
-                array = tmp;
+                if (tmp != NULL)
+                    array = tmp;
+                else {
+                    free (array);
+                    exit (1);
+                }
             }
         }
     } while (i < n);

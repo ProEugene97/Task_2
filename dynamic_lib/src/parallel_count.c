@@ -24,7 +24,13 @@ void * one_thread_count(void *param) {
             threadData->array[ind].c = c;
             if (*threadData->size == threadData->capacity) {
                 threadData->capacity *= 2;
-                threadData->array = (data *)realloc(threadData->array, threadData->capacity);
+                data *tmp = (data *)realloc(threadData->array, threadData->capacity);
+                if (tmp != NULL)
+                    threadData->array = tmp;
+                else {
+                    free (threadData->array);
+                    exit (1);
+                }
             }
             if (i < threadData->last)
                 c = threadData->a[i];
