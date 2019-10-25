@@ -57,6 +57,7 @@ if(ENABLE_CPPCHECK)
             BINARY_DIR          ${CMAKE_BINARY_DIR}/external/cppcheck/build
     )
 
+
     list(APPEND CPPCHECK_ARGS
             --enable=warning,style,performance,portability,unusedFunction
             --std=c++11
