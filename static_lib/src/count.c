@@ -25,7 +25,9 @@ int count(const char *const a, int n) {
             ind = 0;
             if (size == capacity) {
                 capacity *= 2;
-                array = (data *) realloc(array, capacity);
+                data *tmp = (data *) realloc(array, capacity);
+                free(array);
+                array = tmp;
             }
         }
     } while (i < n);
