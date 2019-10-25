@@ -1,6 +1,11 @@
-cmake_minimum_required(VERSION 3.13)
-project(Task_2)
+cmake_minimum_required(VERSION 3.1)
+project(Task_2 C CXX)
 
+include(ExternalProject)
+find_package(Git REQUIRED)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(lib/googletest)
 include_directories(lib/googletest/googletest/include)
