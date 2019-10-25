@@ -66,6 +66,10 @@ if(ENABLE_CPPCHECK)
             -DMAIN=main
             -I ${CMAKE_SOURCE_DIR}/include
             ${CMAKE_SOURCE_DIR}/src/*.c
+            ${CMAKE_SOURCE_DIR}/dynamic_lib/include
+            ${CMAKE_SOURCE_DIR}/dynamic_lib/src/*.c
+            ${CMAKE_SOURCE_DIR}/static_lib/include
+            ${CMAKE_SOURCE_DIR}/static_lib/src/*.c
             )
 
     add_custom_target(
@@ -112,7 +116,7 @@ endif()
 # ------------------------------------------------------------------------------
 
 if(ENABLE_COVERAGE)
-    set_target_properties(author_is_singer
+    set_target_properties(count_lib parallel_count_lib
             PROPERTIES
             COMPILE_FLAGS "-g -O0 -ftest-coverage -fprofile-arcs"
             LINK_FLAGS    "-lgcov --coverage"
